@@ -78,7 +78,15 @@ public class getInput : MonoBehaviour
 
     public void Save()
     {
-        TeamParameters t = new TeamParameters(_name, _school, _type, _student1, _student2, _student3, _teacher); ;
+        TeamParameters t;
+        if (_type != "")
+        {
+            t = new TeamParameters(_name, _school, _type, _student1, _student2, _student3, _teacher);
+        }
+        else
+        {
+            t = new TeamParameters(_name, _school, _student1, _student2, _student3, _teacher);
+        }
         database.saveTeam(t);
         cancel.gameObject.SetActive(false);
         if (add.gameObject.activeSelf == false)

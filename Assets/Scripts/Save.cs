@@ -20,7 +20,10 @@ public class Save : MonoBehaviour
 
     public void OnClick()
     {
-        input.Save();
+        if (input.gameObject.activeSelf)
+        {
+            input.Save();
+        }
         database.Display();
     }
 }

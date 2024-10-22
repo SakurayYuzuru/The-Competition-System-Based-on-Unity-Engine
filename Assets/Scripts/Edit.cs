@@ -8,7 +8,6 @@ public class Edit : MonoBehaviour
     public GameObject input;
     public Button add;
     public Button cancel;
-    public Button save;
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +24,6 @@ public class Edit : MonoBehaviour
     public void OnClick()
     {
         input.SetActive(true);
-        save.gameObject.SetActive(true);
         cancel.gameObject.SetActive(true);
         add.gameObject.SetActive(false);
         this.gameObject.SetActive(false);

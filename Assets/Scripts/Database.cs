@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class Database : MonoBehaviour
 {
     // datas controler
     public TextAsset teamsData;
+    private List<string> data = new List<string>();
     public List<TeamParameters> teamList = new List<TeamParameters>();
     public Dictionary<string, int> typeID = new Dictionary<string, int>();
     public GameObject prefab;
@@ -221,6 +224,9 @@ public class Database : MonoBehaviour
                 teamDisplay.onBoolChanged += HandlePrefabBoolChanged;
             }
         }
+
+        string savepath = "E:/Projection/homework0.0.1/Assets/Resource/out.csv";
+        Save(savepath);
     }
 
     public void clear()
@@ -230,5 +236,33 @@ public class Database : MonoBehaviour
             Destroy(item);
         }
         poolList.Clear();
+    }
+
+    
+
+    // save data into .csv
+    public void Save(string filepath)
+    {
+        loadData();
+        using(StreamWriter writer = new StreamWriter(filepath))
+        {
+            writer.WriteLine("#,Name,School,Type,Competitors,,,Teacher");
+            foreach (string row in data)
+            {
+                writer.WriteLine(string.Join("\n", row));
+            }
+        }
+
+        Debug.Log("saved as: " +  filepath);
+    }
+
+
+    private void loadData()
+    {
+        data.Clear();
+        foreach(var team in teamList)
+        {
+            data.Add(team.toString());
+        }
     }
 }
