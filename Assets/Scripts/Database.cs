@@ -22,6 +22,7 @@ public class Database : MonoBehaviour
     public TMP_Text cur_page;
     public Button next;
     public Button prev;
+    public int changePos;
 
     // Start is called before the first frame update
     void Start()
@@ -59,6 +60,52 @@ public class Database : MonoBehaviour
         
     }
 
+    // bool listener
+    private void Star()
+    {
+        foreach(var prefab in poolList)
+        {
+            TeamDisplay teamDisplay = prefab.GetComponent<TeamDisplay>();
+            if(teamDisplay != null)
+            {
+                teamDisplay.onBoolChanged += HandlePrefabBoolChanged;
+            }
+        }
+    }
+
+    private void HandlePrefabBoolChanged(TeamDisplay teamDisplay, bool newValue)
+    {
+        if (newValue)
+        {
+            RemovePrefab(teamDisplay.gameObject);
+        }
+    }
+
+    private void RemovePrefab(GameObject prefab)
+    {
+        if (poolList.Contains(prefab))
+        {
+            this.changePos = prefab.GetComponent<TeamDisplay>().Team.ID;
+            teamList.Remove(prefab.GetComponent<TeamDisplay>().Team);
+            Destroy(prefab);
+            ChangeID();
+            Display();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        foreach(var prefab in poolList)
+        {
+            TeamDisplay teamDisplay = prefab.GetComponent<TeamDisplay>();
+            if (teamDisplay != null)
+            {
+                teamDisplay.onBoolChanged -= HandlePrefabBoolChanged;
+            }
+        }
+    }
+
+    // change the page
     public void nextPage()
     {
         this.page++;
@@ -89,6 +136,7 @@ public class Database : MonoBehaviour
         }
     }
 
+    // load and display
     public void LoadTeamData()
     {
         string[] dataRow = teamsData.text.Split('\n');
@@ -113,6 +161,19 @@ public class Database : MonoBehaviour
             TeamParameters team = new TeamParameters(_id, _name, _school, _type, _typeID,
                 student1, student2, student3, _teacher);
             saveTeam(team);
+        }
+    }
+
+    private void ChangeID()
+    {
+        foreach(var team in teamList)
+        {
+            if(team.ID < this.changePos)
+            {
+                continue;
+            }
+
+            team.ID--;
         }
     }
 
@@ -154,6 +215,11 @@ public class Database : MonoBehaviour
             GameObject newTeam = GameObject.Instantiate(this.prefab, this.pool.transform);
             newTeam.GetComponent<TeamDisplay>().Team = this.teamList[(this.page - 1) * 5 + cnt];
             poolList.Add(newTeam);
+            TeamDisplay teamDisplay = newTeam.GetComponent<TeamDisplay>();
+            if (teamDisplay != null)
+            {
+                teamDisplay.onBoolChanged += HandlePrefabBoolChanged;
+            }
         }
     }
 
