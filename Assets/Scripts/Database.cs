@@ -23,7 +23,6 @@ public class Database : MonoBehaviour
     public List<GameObject> poolList = new List<GameObject>();
 
     // search
-    public Find find;
     public TMP_InputField input;
     public TMP_Dropdown dropdown;
     public Button search;
@@ -35,6 +34,11 @@ public class Database : MonoBehaviour
     public Button next;
     public Button prev;
     private int changePos;
+
+    // edit
+    public TMP_InputField inputField;
+    public Button add;
+    public Button cancel;
 
     // Start is called before the first frame update
     void Start()
@@ -52,6 +56,7 @@ public class Database : MonoBehaviour
 
         this.cur_page.text = this.page.ToString();
         LoadTeamData();
+        this.showList = this.teamList;
         cnt = Mathf.Min(5, this.teamList.Count);
         if ((this.page - 1) * 5 + cnt >= showList.Count)
         {
@@ -61,15 +66,30 @@ public class Database : MonoBehaviour
         {
             this.prev.gameObject.SetActive(false);
         }
-
         
         //testLoad();
         //show();
         Display();
 
         this.dropdown.onValueChanged.AddListener(delegate { DropdownValueChanged(dropdown); });
+        //prefab.GetComponent<Button>().onClick.AddListener(UpDateInfo);
+        //inputField.onEndEdit.AddListener(OnValueChanged);
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    
+    // edit litsener
+    private void UpDateInfo()
+    {
+
+    }
+
+    // search listener
     private void OnButtonValueChanged()
     {
         switch (this.dropdown.value)
@@ -85,6 +105,7 @@ public class Database : MonoBehaviour
             case 2:
                 input.onValueChanged.AddListener(OnInputValueChangedString);
                 showList = findSchool(input.text);
+                sortTypeID();
                 Display();
                 break;
         }
@@ -100,10 +121,10 @@ public class Database : MonoBehaviour
     {
         clear();
         page = 1;
+        showList.Clear();
         foreach (var team in teamList)
         {
             Debug.Log(team.ToString());
-            showList.Clear();
             if (team.ID == _id)
             {
                 GameObject newTeam = GameObject.Instantiate(this.prefab, pool.transform);
@@ -119,8 +140,20 @@ public class Database : MonoBehaviour
     private List<TeamParameters> findSchool(string _school)
     {
         List<TeamParameters > list = new List<TeamParameters>();
+        foreach(var team in teamList)
+        {
+            if(team.School == _school)
+            {
+                list.Add(team);
+            }
+        }
 
         return list;
+    }
+
+    private void sortTypeID()
+    {
+        showList.Sort((x, y) => x.typeid.CompareTo(y.typeid));
     }
 
     private void OnInputValueChangedInteger(string input)
@@ -138,15 +171,8 @@ public class Database : MonoBehaviour
         string pattern = "^[A-Z]*$";
         if (!Regex.IsMatch(input, pattern))
         {
-            char item = input[input.Length - 1];
-            this.input.text.Remove(item);
+            Debug.Log("false");
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     // bool listener
@@ -188,7 +214,9 @@ public class Database : MonoBehaviour
             showList.Remove(prefab.GetComponent<TeamDisplay>().Team);
             Destroy(prefab);
             ChangeID();
+
             Display();
+            //Debug.Log(teamList.Count.ToString() + " " + showList.Count.ToString() + " " + cnt.ToString());
             if ((this.page - 1) * 5 + cnt >= teamList.Count)
             {
                 this.next.gameObject.SetActive(false);
@@ -291,7 +319,7 @@ public class Database : MonoBehaviour
     {
         team.ID = this.teamList.Count + 1;
         this.teamList.Add(team);
-        this.showList.Add(team);
+        
         /*
         GameObject newTeam = GameObject.Instantiate(this.prefab, this.pool.transform);
         newTeam.GetComponent<TeamDisplay>().Team = team;
@@ -300,10 +328,16 @@ public class Database : MonoBehaviour
         //newTeam.GetComponent<TeamDisplay>().Show(team);
     }
 
+    private void sortSchool()
+    {
+        showList.Sort((x, y) => x.School.CompareTo(y.School));
+    }
+
     public void Display()
     {
         clear();
         cnt = 0;
+        sortSchool();
         /*
         foreach(var team in this.teamList)
         {
@@ -312,14 +346,13 @@ public class Database : MonoBehaviour
             poolList.Add(newTeam);
         }*/
 
-        for(; cnt < Mathf.Min(5, this.showList.Count - (this.page - 1) * 5); ++cnt)
+        for (; cnt < Mathf.Min(5, this.showList.Count - (this.page - 1) * 5); ++cnt)
         {
             GameObject newTeam = GameObject.Instantiate(this.prefab, this.pool.transform);
             newTeam.GetComponent<TeamDisplay>().Team = this.showList[(this.page - 1) * 5 + cnt];
             poolList.Add(newTeam);
             isDelete(newTeam);
         }
-
         string savepath = "E:/Projection/homework0.0.1/Assets/Resource/out.csv";
         Save(savepath);
     }
@@ -332,8 +365,6 @@ public class Database : MonoBehaviour
         }
         poolList.Clear();
     }
-
-    
 
     // save data into .csv
     public void Save(string filepath)
@@ -348,7 +379,7 @@ public class Database : MonoBehaviour
             }
         }
 
-        Debug.Log("saved as: " +  filepath);
+        //Debug.Log("saved as: " +  filepath);
     }
 
 

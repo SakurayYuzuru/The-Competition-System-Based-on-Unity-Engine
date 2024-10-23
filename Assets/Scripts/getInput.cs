@@ -47,6 +47,17 @@ public class getInput : MonoBehaviour
 
     }
 
+    public void Show(TeamParameters team)
+    {
+        teamname.text = team.Name;
+        school.text = team.School;
+        type.text = team.Type;
+        student1.text = team.Competitors[0];
+        student2.text = team.Competitors[1];
+        student3.text = team.Competitors[2];
+        teacher.text = team.Teacher;
+    }
+
     public void getInputName(string text)
     {
         _name = text;

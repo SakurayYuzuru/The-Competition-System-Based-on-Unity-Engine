@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class TeamDisplay : MonoBehaviour
@@ -16,6 +17,17 @@ public class TeamDisplay : MonoBehaviour
     public TMP_Text Student1, Student2, Student3;
     public TMP_Text Teacher;
     public Button delete;
+
+    // edit input field
+    public GameObject input;
+    public TMP_InputField id;
+    public TMP_InputField name;
+    public TMP_InputField school;
+    public TMP_InputField type;
+    public TMP_InputField student1, student2, student3;
+    public TMP_InputField teacher;
+    public Button save;
+    public Button edit;
 
     public TeamParameters Team = new TeamParameters();
 
@@ -31,6 +43,7 @@ public class TeamDisplay : MonoBehaviour
         {
             delete.onClick.AddListener(OnButtonClicked);
         }
+        input.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -51,6 +64,24 @@ public class TeamDisplay : MonoBehaviour
         Teacher.text = Team.Teacher;
     }
 
+    // edit listener
+    public void OnEditClick()
+    {
+        name.text = Name.text;
+        school.text = School.text;
+        type.text = Type.text;
+        student1.text = Student1.text;
+        student2.text = Student2.text;
+        student3.text = Student3.text;
+        teacher.text = Teacher.text;
+
+        input.SetActive(true);
+        this.edit.gameObject.SetActive(false);
+    }
+
+
+
+    // delete listener
     public bool Delete => isDelete;
 
     private void OnButtonClicked()
