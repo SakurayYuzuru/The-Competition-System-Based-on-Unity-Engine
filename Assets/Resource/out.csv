@@ -1,13 +1,11 @@
 #,Name,School,Type,Competitors,,,Teacher
-3,test3,GZNU,Java Software Development,Shade,SOTA,yes,Zhibing Wu
+2,test3,GZNU,Java Software Development,Shade,SOTA,yes,Zhibing Wu
 
-4,test4,GZNU,Cpp Programming,Algorithm,template,CSAPP,Zhibing Wu
+3,test4,GZNU,Network Security,Algorithm,template,CSAPP,Zhibing Wu
 
-5,test5,GZNU,Java Software Development,Shade,SOTA,yes,Zhibing Wu
+4,test5,GZNU,Java Software Development,Shade,SOTA,yes,Zhibing Wu
 
-6,test6,GZNU,Network Security,Algorithm,template,CSAPP,Zhibing Wu
+5,test6,GZNU,Network Security,Algorithm,template,CSAPP,Zhibing Wu
 
 1,test1,THU,Cpp Programming,Xiao Li,Xiao Wang,Xiao Zhang,Gang Wang
-
-2,test2,ZJU,Web Application Development,TA,Uni,UE,Sida Peng
 

@@ -59,6 +59,7 @@ public class Database : MonoBehaviour
         this.typeID["Web Application Development"] = (int)TypeID.Web;
         this.typeID["Network Security"] = (int)TypeID.Network;
         this.typeID["Embedded Design and Development"] = (int)TypeID.Embedded;
+        this.typeID["Microcontroller Design and Development"] = (int)TypeID.Microcontroller;
         this.typeID["EDA Design and Development"] = (int)TypeID.EDA;
         this.typeID["IoT Design and Development"] = (int)TypeID.IoT;
         this.typeID["FPGA Design and Development"] = (int)TypeID.FPGA;
@@ -230,7 +231,17 @@ public class Database : MonoBehaviour
             showList.Remove(prefab.GetComponent<TeamDisplay>().Team);
             Destroy(prefab);
             ChangeID();
-
+            cnt = Mathf.Min(5, this.teamList.Count);
+            if ((this.page - 1) * 5 + cnt >= showList.Count)
+            {
+                this.next.gameObject.SetActive(false);
+                this.page--;
+                this.cur_page.text = this.page.ToString();
+            }
+            if (this.page == 1)
+            {
+                this.prev.gameObject.SetActive(false);
+            }
             Display();
             //Debug.Log(teamList.Count.ToString() + " " + showList.Count.ToString() + " " + cnt.ToString());
             if ((this.page - 1) * 5 + cnt >= teamList.Count)

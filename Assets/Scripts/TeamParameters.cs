@@ -22,6 +22,7 @@ public class TeamParameters
         this.typeID["Web Application Development"] = (int)TypeID.Web;
         this.typeID["Network Security"] = (int)TypeID.Network;
         this.typeID["Embedded Design and Development"] = (int)TypeID.Embedded;
+        this.typeID["Microcontroller Design and Development"] = (int)TypeID.Microcontroller;
         this.typeID["EDA Design and Development"] = (int)TypeID.EDA;
         this.typeID["IoT Design and Development"] = (int)TypeID.IoT;
         this.typeID["FPGA Design and Development"] = (int)TypeID.FPGA;
@@ -35,6 +36,7 @@ public class TeamParameters
         this.typeID["Web Application Development"] = (int)TypeID.Web;
         this.typeID["Network Security"] = (int)TypeID.Network;
         this.typeID["Embedded Design and Development"] = (int)TypeID.Embedded;
+        this.typeID["Microcontroller Design and Development"] = (int)TypeID.Microcontroller;
         this.typeID["EDA Design and Development"] = (int)TypeID.EDA;
         this.typeID["IoT Design and Development"] = (int)TypeID.IoT;
         this.typeID["FPGA Design and Development"] = (int)TypeID.FPGA;
@@ -50,6 +52,7 @@ public class TeamParameters
         this.typeID["Web Application Development"] = (int)TypeID.Web;
         this.typeID["Network Security"] = (int)TypeID.Network;
         this.typeID["Embedded Design and Development"] = (int)TypeID.Embedded;
+        this.typeID["Microcontroller Design and Development"] = (int)TypeID.Microcontroller;
         this.typeID["EDA Design and Development"] = (int)TypeID.EDA;
         this.typeID["IoT Design and Development"] = (int)TypeID.IoT;
         this.typeID["FPGA Design and Development"] = (int)TypeID.FPGA;
@@ -71,6 +74,7 @@ public class TeamParameters
         this.typeID["Web Application Development"] = (int)TypeID.Web;
         this.typeID["Network Security"] = (int)TypeID.Network;
         this.typeID["Embedded Design and Development"] = (int)TypeID.Embedded;
+        this.typeID["Microcontroller Design and Development"] = (int)TypeID.Microcontroller;
         this.typeID["EDA Design and Development"] = (int)TypeID.EDA;
         this.typeID["IoT Design and Development"] = (int)TypeID.IoT;
         this.typeID["FPGA Design and Development"] = (int)TypeID.FPGA;
