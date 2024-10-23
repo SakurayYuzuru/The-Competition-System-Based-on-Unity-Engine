@@ -25,6 +25,7 @@ public class Database : MonoBehaviour
     public TMP_InputField input;
     public TMP_Dropdown dropdown;
     public Button search;
+    public GameObject add;
 
     // page controler
     public int page = 1;
@@ -32,7 +33,7 @@ public class Database : MonoBehaviour
     public TMP_Text cur_page;
     public Button next;
     public Button prev;
-    private int changePos;
+    private int changePos = 0;
 
     // edit
     public static Database Instance { get; private set; }
@@ -110,21 +111,25 @@ public class Database : MonoBehaviour
 
     public void DeleteTeam(TeamParameters deleteTeam)
     {
-        for(int i = 0; i < teamList.Count; ++i)
+        if (teamList.Contains(deleteTeam))
         {
-            if (teamList[i] == deleteTeam)
-            {
-                teamList.RemoveAt(i);
-                break;
-            }
+            teamList.Remove(deleteTeam);
+            this.changePos = deleteTeam.ID;
         }
-        for (int i = 0; i < showList.Count; ++i)
+        if (showList.Contains(deleteTeam))
         {
-            if (showList[i] == deleteTeam)
-            {
-                showList.RemoveAt(i);
-                break;
-            }
+            showList.Remove(deleteTeam);
+        }
+        ChangeID();
+        if (this.page * 5 >= showList.Count)
+        {
+            this.next.gameObject.SetActive(false);
+            this.page--;
+            this.cur_page.text = this.page.ToString();
+        }
+        if (this.page == 1)
+        {
+            this.prev.gameObject.SetActive(false);
         }
         Display();
     }
@@ -157,6 +162,16 @@ public class Database : MonoBehaviour
     private void DropdownValueChanged(TMP_Dropdown change)
     {
         Debug.Log("New value: " + change.value);  // 输出选中的选项索引
+        switch (change.value)
+        {
+            case 0:
+                add.gameObject.SetActive(true);
+                break;
+            case 1:
+            case 2:
+                add.gameObject.SetActive(false);
+                break;
+        }
         search.onClick.AddListener(OnButtonValueChanged);
     }
 
@@ -376,8 +391,10 @@ public class Database : MonoBehaviour
             {
                 continue;
             }
-
-            team.ID--;
+            else
+            {
+                team.ID--;
+            }
         }
     }
 

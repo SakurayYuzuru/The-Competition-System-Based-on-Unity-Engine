@@ -29,6 +29,7 @@ public class TeamDisplay : MonoBehaviour
     public Button edit;
 
     public TeamParameters Team = new TeamParameters();
+    public GameObject prefab;
 
     // bool listener
     public bool isDelete = false;
@@ -156,6 +157,7 @@ public class TeamDisplay : MonoBehaviour
     // delete
     private void OnButtonClicked()
     {
+        Destroy(this.prefab);
         Database.Instance.DeleteTeam(Team);
     }
 }
