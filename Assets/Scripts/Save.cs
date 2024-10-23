@@ -34,11 +34,6 @@ public class Save : MonoBehaviour
 
     private void OnButtonValueChanged()
     {
-        if (input.gameObject.activeSelf)
-        {
-            input.Save();
-        }
-
         if (this.dropdown.value == 0)
         {
             database.showList = database.teamList;

@@ -27,6 +27,7 @@ public class getInput : MonoBehaviour
     public Button add;
     public Button cancel;
     public Database database;
+    public Button save;
 
     // Start is called before the first frame update
     void Start()
@@ -88,22 +89,17 @@ public class getInput : MonoBehaviour
 
     public void Save()
     {
-        TeamParameters t;
-        if (_type != "")
-        {
-            t = new TeamParameters(_name, _school, _type, _student1, _student2, _student3, _teacher);
-        }
-        else
-        {
-            t = new TeamParameters(_name, _school, _student1, _student2, _student3, _teacher);
-        }
-        database.saveTeam(t);
+        TeamParameters t = new TeamParameters(_name, _school, _type, _student1, _student2, _student3, _teacher);
+        Database.Instance.saveTeam(t);
+        Database.Instance.Display();
         cancel.gameObject.SetActive(false);
         if (add.gameObject.activeSelf == false)
         {
             add.gameObject.SetActive(true);
             
         }
+        this.save.gameObject.SetActive(false);
+        this.add.gameObject.SetActive(true);
         this.gameObject.SetActive(false);
     }
 }

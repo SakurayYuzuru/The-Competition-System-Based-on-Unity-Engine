@@ -97,12 +97,37 @@ public class Database : MonoBehaviour
                 break;
             }
         }
-
-        // 保存或刷新显示
-        Save("your_save_path.csv");
+        for (int i = 0; i < showList.Count; ++i)
+        {
+            if (showList[i].ID == updatedTeam.ID)
+            {
+                showList[i] = updatedTeam;
+                break;
+            }
+        }
         Display();
     }
 
+    public void DeleteTeam(TeamParameters deleteTeam)
+    {
+        for(int i = 0; i < teamList.Count; ++i)
+        {
+            if (teamList[i] == deleteTeam)
+            {
+                teamList.RemoveAt(i);
+                break;
+            }
+        }
+        for (int i = 0; i < showList.Count; ++i)
+        {
+            if (showList[i] == deleteTeam)
+            {
+                showList.RemoveAt(i);
+                break;
+            }
+        }
+        Display();
+    }
 
     // search listener
     private void OnButtonValueChanged()
@@ -192,6 +217,7 @@ public class Database : MonoBehaviour
         }
     }
 
+    /*
     // bool listener
     private void Star()
     {
@@ -262,6 +288,7 @@ public class Database : MonoBehaviour
             }
         }
     }
+    */
 
     // change the page
     private void checkPage()
@@ -271,9 +298,17 @@ public class Database : MonoBehaviour
         {
             this.next.gameObject.SetActive(false);
         }
+        else
+        {
+            this.next.gameObject.SetActive(true);
+        }
         if (this.page == 1)
         {
             this.prev.gameObject.SetActive(false);
+        }
+        else
+        {
+            this.prev.gameObject.SetActive(true);
         }
     }
 
@@ -392,9 +427,8 @@ public class Database : MonoBehaviour
             GameObject newTeam = GameObject.Instantiate(this.prefab, this.pool.transform);
             newTeam.GetComponent<TeamDisplay>().Team = this.showList[(this.page - 1) * 5 + cnt];
             poolList.Add(newTeam);
-            isDelete(newTeam);
         }
-        string savepath = "E:/Projection/homework0.0.1/Assets/Resource/out.csv";
+        string savepath = "out.csv";
         Save(savepath);
     }
 

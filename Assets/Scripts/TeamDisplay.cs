@@ -20,7 +20,6 @@ public class TeamDisplay : MonoBehaviour
 
     // edit input field
     public GameObject input;
-    public TMP_InputField id;
     public TMP_InputField _name;
     public TMP_InputField school;
     public TMP_InputField type;
@@ -77,7 +76,6 @@ public class TeamDisplay : MonoBehaviour
     // edit listener
     public void OnSaveClick()
     {
-        id.onEndEdit.RemoveAllListeners();
         _name.onEndEdit.RemoveAllListeners();
         school.onEndEdit.RemoveAllListeners();
         type.onEndEdit.RemoveAllListeners();
@@ -96,16 +94,10 @@ public class TeamDisplay : MonoBehaviour
 
     public void OnEditClick()
     {
-        _name.text = Name.text;
-        school.text = School.text;
-        type.text = Type.text;
-        student1.text = Student1.text;
-        student2.text = Student2.text;
-        student3.text = Student3.text;
-        teacher.text = Teacher.text;
-
+        this.delete.gameObject.SetActive(false);
+        this.edit.gameObject.SetActive(false);
         input.SetActive(true);
-        id.onEndEdit.AddListener(getInputID);
+        
         _name.onEndEdit.AddListener(getInputName);
         school.onEndEdit.AddListener(getInputSchool);
         type.onEndEdit.AddListener(getInputType);
@@ -116,9 +108,6 @@ public class TeamDisplay : MonoBehaviour
         this.save.onClick.AddListener(OnSaveClick);
 
         invShow();
-
-        this.delete.gameObject.SetActive(false);
-        this.edit.gameObject.SetActive(false);
     }
 
     public void getInputID(string text)
@@ -164,20 +153,9 @@ public class TeamDisplay : MonoBehaviour
         Team.Competitors[2] = text;
     }
 
-    // delete listener
-    public bool Delete => isDelete;
-
+    // delete
     private void OnButtonClicked()
     {
-        isDelete = !isDelete;
-        onBoolChanged?.Invoke(this, isDelete);
-    }
-
-    private void OnDestroy()
-    {
-        if(delete != null)
-        {
-            delete.onClick.RemoveListener(OnButtonClicked);
-        }
+        Database.Instance.DeleteTeam(Team);
     }
 }
