@@ -7,7 +7,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Windows;
-using static UnityEditor.Progress;
 
 public class Database : MonoBehaviour
 {
@@ -36,9 +35,20 @@ public class Database : MonoBehaviour
     private int changePos;
 
     // edit
-    public TMP_InputField inputField;
-    public Button add;
-    public Button cancel;
+    public static Database Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -57,15 +67,7 @@ public class Database : MonoBehaviour
         this.cur_page.text = this.page.ToString();
         LoadTeamData();
         this.showList = this.teamList;
-        cnt = Mathf.Min(5, this.teamList.Count);
-        if ((this.page - 1) * 5 + cnt >= showList.Count)
-        {
-            this.next.gameObject.SetActive(false);
-        }
-        if (this.page == 1)
-        {
-            this.prev.gameObject.SetActive(false);
-        }
+        
         
         //testLoad();
         //show();
@@ -82,12 +84,24 @@ public class Database : MonoBehaviour
 
     }
 
-    
-    // edit litsener
-    private void UpDateInfo()
-    {
 
+    // edit
+    public void UpdateTeam(TeamParameters updatedTeam)
+    {
+        for (int i = 0; i < teamList.Count; i++)
+        {
+            if (teamList[i].ID == updatedTeam.ID)
+            {
+                teamList[i] = updatedTeam;
+                break;
+            }
+        }
+
+        // 保存或刷新显示
+        Save("your_save_path.csv");
+        Display();
     }
+
 
     // search listener
     private void OnButtonValueChanged()
@@ -100,7 +114,10 @@ public class Database : MonoBehaviour
                 break;
             case 1:
                 input.onValueChanged.AddListener(OnInputValueChangedInteger);
-                findID(int.Parse(input.text));
+                Debug.Log(input.text);
+                showList = findID(input.text);
+                sortSchool();
+                Display();
                 break;
             case 2:
                 input.onValueChanged.AddListener(OnInputValueChangedString);
@@ -117,24 +134,24 @@ public class Database : MonoBehaviour
         search.onClick.AddListener(OnButtonValueChanged);
     }
 
-    private void findID(int _id)
+    private List<TeamParameters> findID(string text)
     {
+        List<TeamParameters> list = new List<TeamParameters> ();
         clear();
         page = 1;
-        showList.Clear();
+        int _id = int.Parse(text);
+
+        testLoad();
         foreach (var team in teamList)
         {
-            Debug.Log(team.ToString());
+            Debug.Log("team");
             if (team.ID == _id)
             {
-                GameObject newTeam = GameObject.Instantiate(this.prefab, pool.transform);
-                newTeam.GetComponent<TeamDisplay>().Team = team;
-                poolList.Add(newTeam);
-                showList.Add(team);
-                isDelete(newTeam);
-                return;
+                list.Add(team);
             }
         }
+
+        return list;
     }
 
     private List<TeamParameters> findSchool(string _school)
@@ -161,8 +178,7 @@ public class Database : MonoBehaviour
         string pattern = "^[0-9]*$";
         if (!Regex.IsMatch(input, pattern))
         {
-            char item = input[input.Length - 1];
-            this.input.text.Remove(item);
+            Debug.Log("false");
         }
     }
 
@@ -237,6 +253,19 @@ public class Database : MonoBehaviour
     }
 
     // change the page
+    private void checkPage()
+    {
+        cnt = Mathf.Min(5, this.teamList.Count);
+        if ((this.page - 1) * 5 + cnt >= showList.Count)
+        {
+            this.next.gameObject.SetActive(false);
+        }
+        if (this.page == 1)
+        {
+            this.prev.gameObject.SetActive(false);
+        }
+    }
+
     public void nextPage()
     {
         showList = teamList;
@@ -336,6 +365,7 @@ public class Database : MonoBehaviour
     public void Display()
     {
         clear();
+        checkPage();
         cnt = 0;
         sortSchool();
         /*

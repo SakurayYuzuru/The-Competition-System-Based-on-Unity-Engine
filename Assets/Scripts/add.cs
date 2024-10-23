@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class add : MonoBehaviour
 {
     public GameObject input;
-    public Button edit;
     public Button cancel;
 
     // Start is called before the first frame update
@@ -23,7 +22,6 @@ public class add : MonoBehaviour
 
     public void OnClick()
     {
-        edit.gameObject.SetActive(false);
         cancel.gameObject.SetActive(true);
         input.SetActive(true);
         this.gameObject.SetActive(false);

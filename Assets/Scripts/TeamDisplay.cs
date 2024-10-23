@@ -21,7 +21,7 @@ public class TeamDisplay : MonoBehaviour
     // edit input field
     public GameObject input;
     public TMP_InputField id;
-    public TMP_InputField name;
+    public TMP_InputField _name;
     public TMP_InputField school;
     public TMP_InputField type;
     public TMP_InputField student1, student2, student3;
@@ -42,6 +42,10 @@ public class TeamDisplay : MonoBehaviour
         if(delete != null)
         {
             delete.onClick.AddListener(OnButtonClicked);
+        }
+        if(edit != null)
+        {
+            edit.onClick.AddListener(OnEditClick);
         }
         input.gameObject.SetActive(false);
     }
@@ -64,10 +68,35 @@ public class TeamDisplay : MonoBehaviour
         Teacher.text = Team.Teacher;
     }
 
+    private void invShow()
+    {
+        Team = new TeamParameters(int.Parse(ID.text), Name.text, School.text, Type.text, 
+            Student1.text, Student2.text, Student3.text, Teacher.text);
+    }
+
     // edit listener
+    public void OnSaveClick()
+    {
+        id.onEndEdit.RemoveAllListeners();
+        _name.onEndEdit.RemoveAllListeners();
+        school.onEndEdit.RemoveAllListeners();
+        type.onEndEdit.RemoveAllListeners();
+        student1.onEndEdit.RemoveAllListeners();
+        student2.onEndEdit.RemoveAllListeners();
+        student3.onEndEdit.RemoveAllListeners();
+        teacher.onEndEdit.RemoveAllListeners();
+
+        // TODO: send data to database
+        Database.Instance.UpdateTeam(Team);
+
+        this.edit.gameObject.SetActive(true);
+        this.delete.gameObject.SetActive(true);
+        this.input.gameObject.SetActive(false);
+    }
+
     public void OnEditClick()
     {
-        name.text = Name.text;
+        _name.text = Name.text;
         school.text = School.text;
         type.text = Type.text;
         student1.text = Student1.text;
@@ -76,10 +105,64 @@ public class TeamDisplay : MonoBehaviour
         teacher.text = Teacher.text;
 
         input.SetActive(true);
+        id.onEndEdit.AddListener(getInputID);
+        _name.onEndEdit.AddListener(getInputName);
+        school.onEndEdit.AddListener(getInputSchool);
+        type.onEndEdit.AddListener(getInputType);
+        student1.onEndEdit.AddListener(getInputStu1);
+        student2.onEndEdit.AddListener(getInputStu2);
+        student3.onEndEdit.AddListener(getInputStu3);
+        teacher.onEndEdit.AddListener(getInputTeacher);
+        this.save.onClick.AddListener(OnSaveClick);
+
+        invShow();
+
+        this.delete.gameObject.SetActive(false);
         this.edit.gameObject.SetActive(false);
     }
 
+    public void getInputID(string text)
+    {
+        ID.text = text;
+        Team.ID = int.Parse(ID.text);
+    }
 
+    public void getInputName(string text)
+    {
+        Name.text = text;
+        Team.Name = text;
+    }
+    public void getInputType(string text)
+    {
+        Type.text = text;
+        Team.Type = text;
+        Team.typeid = Team.typeID[Team.Type];
+    }
+    public void getInputTeacher(string text)
+    {
+        Teacher.text = text;
+        Team.Teacher = text;
+    }
+    public void getInputSchool(string text)
+    {
+        School.text = text;
+        Team.School = text;
+    }
+    public void getInputStu1(string text)
+    {
+        Student1.text = text;
+        Team.Competitors[0] = text;
+    }
+    public void getInputStu2(string text)
+    {
+        Student2.text = text;
+        Team.Competitors[1] = text;
+    }
+    public void getInputStu3(string text)
+    {
+        Student3.text = text;
+        Team.Competitors[2] = text;
+    }
 
     // delete listener
     public bool Delete => isDelete;

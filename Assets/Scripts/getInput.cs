@@ -25,7 +25,6 @@ public class getInput : MonoBehaviour
     public int _id;
 
     public Button add;
-    public Button edit;
     public Button cancel;
     public Database database;
 
@@ -104,10 +103,6 @@ public class getInput : MonoBehaviour
         {
             add.gameObject.SetActive(true);
             
-        }
-        if (edit.gameObject.activeSelf == false)
-        {
-            edit.gameObject.SetActive(true);
         }
         this.gameObject.SetActive(false);
     }
