@@ -1,5 +1,6 @@
 # The Competition System Based on Unity Engine
-
+This project is fully open-sourced on GitHub.
+https://github.com/SakurayYuzuru/The-Competition-System-Based-on-Unity-Engine
 ## Manage competition teams attributes
 ```csharp
 public class TeamParameters{
