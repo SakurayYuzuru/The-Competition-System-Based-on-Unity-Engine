@@ -1,6 +1,54 @@
 # The Competition System Based on Unity Engine
 This project is fully open-sourced on GitHub.  
 https://github.com/SakurayYuzuru/The-Competition-System-Based-on-Unity-Engine
+## Load and Save
+Unity support TextAssets to load csv file and `C#` support `string.Split(char)` to split text.  
+We could also use StreamWriter in `System.IO` to write text into a file.
+```csharp
+public class Database{
+    public void LoadTeamData()
+    {
+        string[] dataRow = teamsData.text.Split('\n');
+        foreach(var row in dataRow)
+        {
+            string[] rowArray = row.Split(',');
+            if (rowArray[0] == "#" || rowArray[0] == "")
+            {
+                continue;
+            }
+
+            int _id = int.Parse(rowArray[0]);
+            string _name = rowArray[1];
+            string _school = rowArray[2];
+            string _type = rowArray[3];
+            int _typeID = this.typeID[_type];
+            string student1 = rowArray[4];
+            string student2 = rowArray[5];
+            string student3 = rowArray[6];
+            string _teacher = rowArray[7];
+
+            TeamParameters team = new TeamParameters(_id, _name, _school, _type, _typeID,
+                student1, student2, student3, _teacher);
+            saveTeam(team);
+        }
+    }
+    public void Save(string filepath)
+    {
+        loadData();
+        using(StreamWriter writer = new StreamWriter(filepath))
+        {
+            writer.WriteLine("#,Name,School,Type,Competitors,,,Teacher");
+            foreach (string row in data)
+            {
+                writer.WriteLine(string.Join("\n", row));
+            }
+        }
+
+        //Debug.Log("saved as: " +  filepath);
+    }
+}
+```
+
 ## Manage competition teams attributes
 ```csharp
 public class TeamParameters{
@@ -425,5 +473,5 @@ In our system, the school name is abbreviated. If there are many teams here, you
 ### Exit
 An application must have a exit button. We support you click on `Exit` button to close this process.
 
-## Overview
+## Future Work
 Our searching algorithm could use other datastructure like `multi_map<T, T>` in cpp which support O(1) searching.
