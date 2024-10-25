@@ -27,8 +27,7 @@ public class Database{
             string student3 = rowArray[6];
             string _teacher = rowArray[7];
 
-            TeamParameters team = new TeamParameters(_id, _name, _school, _type, _typeID,
-                student1, student2, student3, _teacher);
+            TeamParameters team = new TeamParameters(_id, _name, _school, _type, _typeID, student1, student2, student3, _teacher);
             saveTeam(team);
         }
     }
@@ -155,10 +154,7 @@ public class Database{
 public class getInput{
     public void Save()
     {
-        TeamParameters t = 
-        new TeamParameters(_name, _school, _type, 
-        _student1, _student2, _student3,
-         _teacher);
+        TeamParameters t = new TeamParameters(_name, _school, _type, _student1, _student2, _student3, _teacher);
         Database.Instance.saveTeam(t);
         cancel.gameObject.SetActive(false);
         if (add.gameObject.activeSelf == false)
@@ -187,8 +183,7 @@ public class Database{
             prefab.GetComponent<TeamDisplay>();
             if(teamDisplay != null)
             {
-                teamDisplay.onBoolChanged += 
-                HandlePrefabBoolChanged;
+                teamDisplay.onBoolChanged += HandlePrefabBoolChanged;
             }
         }
     }
@@ -199,8 +194,7 @@ public class Database{
         newTeam.GetComponent<TeamDisplay>();
         if (teamDisplay != null)
         {
-            teamDisplay.onBoolChanged += 
-            HandlePrefabBoolChanged;
+            teamDisplay.onBoolChanged += HandlePrefabBoolChanged;
         }
     }
 
@@ -217,8 +211,7 @@ public class Database{
     {
         if (poolList.Contains(prefab))
         {
-            this.changePos = 
-            prefab.GetComponent<TeamDisplay>().Team.ID;
+            this.changePos = prefab.GetComponent<TeamDisplay>().Team.ID;
             teamList.Remove(prefab.GetComponent<TeamDisplay>().Team);
             showList.Remove(prefab.GetComponent<TeamDisplay>().Team);
             Destroy(prefab);
@@ -315,9 +308,7 @@ public class TeamDisplay{
 
     private void invShow()
     {
-        Team = 
-        new TeamParameters(int.Parse(ID.text), 
-        Name.text, School.text, Type.text, 
+        Team = new TeamParameters(int.Parse(ID.text), Name.text, School.text, Type.text, 
         Student1.text, Student2.text, 
         Student3.text, Teacher.text);
     }
