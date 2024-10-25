@@ -86,11 +86,15 @@ public enum TypeID
     Network = 5,
     // Embedded Design and Development
     Embedded = 6,
-    // 
+    // Microcontroller Design and Development
     Microcontroller = 7,
+    // EDA Design and Development
     EDA = 8,
+    // IoT Design and Development
     IoT = 9,
+    // FPGA Design and Development
     FPGA = 10,
+    // 5G Network Planning and Construction
     fiveG = 11
 }
 ```  
