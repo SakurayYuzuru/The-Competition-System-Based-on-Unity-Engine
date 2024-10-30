@@ -468,5 +468,8 @@ In our system, the school name is abbreviated. If there are many teams here, you
 ### Exit
 An application must have a exit button. We support you click on `Exit` button to close this process.
 
+### Cancel
+When you click on the Add button, you could cancel your option.
+
 ## Future Work
 Our searching algorithm could use other datastructure like `multi_map<T, T>` in cpp which support O(1) searching.
