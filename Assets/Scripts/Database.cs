@@ -121,9 +121,9 @@ public class Database : MonoBehaviour
             showList.Remove(deleteTeam);
         }
         ChangeID();
-        if (this.page * 5 >= showList.Count)
+        checkPage();
+        if(this.poolList.Count == 0 && this.page > 1)
         {
-            this.next.gameObject.SetActive(false);
             this.page--;
             this.cur_page.text = this.page.ToString();
         }
@@ -131,6 +131,21 @@ public class Database : MonoBehaviour
         {
             this.prev.gameObject.SetActive(false);
         }
+        /*
+        if (this.page * 5 >= showList.Count)
+        {
+            this.next.gameObject.SetActive(false);
+            if(this.page > 1)
+            {
+                this.page--;
+                this.cur_page.text = this.page.ToString();
+            }
+        }
+        if (this.page == 1)
+        {
+            this.prev.gameObject.SetActive(false);
+        }
+        */
         Display();
     }
 
@@ -147,6 +162,8 @@ public class Database : MonoBehaviour
                 input.onValueChanged.AddListener(OnInputValueChangedInteger);
                 Debug.Log(input.text);
                 showList = findID(input.text);
+                this.page = 1;
+                this.cur_page.text = this.page.ToString();
                 sortSchool();
                 Display();
                 break;
@@ -154,7 +171,10 @@ public class Database : MonoBehaviour
                 input.onValueChanged.AddListener(OnInputValueChangedString);
                 showList = findSchool(input.text);
                 sortTypeID();
+                //testFind();
                 Display();
+                this.page = 1;
+                this.cur_page.text = this.page.ToString();
                 break;
         }
     }
@@ -185,7 +205,6 @@ public class Database : MonoBehaviour
         testLoad();
         foreach (var team in teamList)
         {
-            Debug.Log("team");
             if (team.ID == _id)
             {
                 list.Add(team);
@@ -202,6 +221,7 @@ public class Database : MonoBehaviour
         {
             if(team.School == _school)
             {
+                //Debug.Log("team" + team.ToString());
                 list.Add(team);
             }
         }
@@ -329,7 +349,6 @@ public class Database : MonoBehaviour
 
     public void nextPage()
     {
-        showList = teamList;
         this.page++;
         Display();
         this.cur_page.text = this.page.ToString();
@@ -342,7 +361,6 @@ public class Database : MonoBehaviour
     public void prevPage()
     {
         this.page--;
-        showList = teamList;
         Display();
         this.cur_page.text = this.page.ToString();
         if(this.page == 1)
@@ -429,7 +447,6 @@ public class Database : MonoBehaviour
     {
         clear();
         checkPage();
-        cnt = 0;
         sortSchool();
         /*
         foreach(var team in this.teamList)
@@ -438,8 +455,8 @@ public class Database : MonoBehaviour
             newTeam.GetComponent<TeamDisplay>().Team = team;
             poolList.Add(newTeam);
         }*/
-
-        for (; cnt < Mathf.Min(5, this.showList.Count - (this.page - 1) * 5); ++cnt)
+        testFind();
+        for (cnt = 0; cnt < Mathf.Min(5, this.showList.Count - (this.page - 1) * 5); ++cnt)
         {
             GameObject newTeam = GameObject.Instantiate(this.prefab, this.pool.transform);
             newTeam.GetComponent<TeamDisplay>().Team = this.showList[(this.page - 1) * 5 + cnt];
@@ -481,6 +498,14 @@ public class Database : MonoBehaviour
         foreach(var team in teamList)
         {
             data.Add(team.toString());
+        }
+    }
+
+    private void testFind()
+    {
+        foreach(var team in this.showList)
+        {
+            Debug.Log(team.ToString());
         }
     }
 }

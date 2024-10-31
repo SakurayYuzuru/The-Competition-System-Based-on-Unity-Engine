@@ -4461,6 +4461,7 @@ MonoBehaviour:
   teacher: {fileID: 5166195195447544436}
   save: {fileID: 484478238718660245}
   edit: {fileID: 3800270105468402332}
+  prefab: {fileID: 7232435766975485986}
   isDelete: 0
 --- !u!1 &7320407555331817782
 GameObject:

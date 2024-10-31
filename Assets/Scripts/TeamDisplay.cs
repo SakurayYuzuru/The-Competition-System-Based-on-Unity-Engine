@@ -157,7 +157,8 @@ public class TeamDisplay : MonoBehaviour
     // delete
     private void OnButtonClicked()
     {
-        Destroy(this.prefab);
+        Database.Instance.poolList.Remove(this.gameObject);
         Database.Instance.DeleteTeam(Team);
+        Destroy(this.gameObject);
     }
 }
